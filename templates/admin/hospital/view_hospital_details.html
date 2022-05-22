@@ -1,0 +1,90 @@
+{% extends 'Admin/base.html' %}
+{% block title %}Blood Donation | Admin | View Hospital Details{% endblock %}
+{% block content %}
+
+{% if details %}
+
+<div class="content-wrapper">
+  <div class="row">
+
+    <div class="col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">View Hospital Details</h4>
+
+          <form class="forms-sample" id="form_create">
+            <div class="form-group">
+              <label for="name">Hospital Name</label>
+              <input type="text" class="form-control" id="name" placeholder="Hospital Name" value="{{ details[0][1] }}"
+                disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Hospital Email</label>
+              <input type="email" class="form-control" id="email" placeholder="Hospital Email"
+                value="{{ details[0][0] }}" disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="address">Hospital Address</label>
+              <input type="text" class="form-control" id="address" placeholder="Hospital Address"
+                value="{{ details[0][2] }}" disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="number">Hospital Contact Number</label>
+              <input type="text" class="form-control" id="number" placeholder="Hospital Contact Number"
+                value="{{ details[0][3] }}" disabled>
+            </div>
+
+            <button type="submit" id="btn-remove" onclick="removeHospital('{{ details[0][0] }}')"
+              class="btn btn-primary me-2">Remove</button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endif %}
+
+<script>
+
+  function removeHospital($id) {
+
+    var form_data = new FormData();
+    form_data.append('id', $id);
+
+    $.ajax({
+      url: "/admin/hospital/remove",
+      enctype: 'multipart/form-data',
+      data: form_data,
+      contentType: false,
+      cache: false,
+      processData: false,
+      type: 'POST',
+    })
+      .done(function (data) {
+        if (data.redirect) {
+          window.location.href = data.redirect;
+        }
+        else if (data.success) {
+          Swal.fire("Remove Hospital", data.success, "success");
+          window.location.href = "/admin/hospital/";
+        }
+        else if (data.error) {
+          Swal.fire("Remove Hospital", data.error, "warning");
+        }
+        else {
+          Swal.fire("Remove Hospital", "Some error occur!", "warning");
+        }
+      });
+
+    event.preventDefault();
+  }
+
+</script>
+
+{% endblock %}

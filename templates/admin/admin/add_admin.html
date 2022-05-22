@@ -1,0 +1,94 @@
+{% extends 'admin/base.html' %}
+{% block title %}Blood Donation | Admin | Add Admin{% endblock %}
+{% block content %}
+
+<!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script> -->
+
+<div class="content-wrapper">
+  <div class="row">
+
+    <div class="col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Add Admin</h4>
+
+          <form class="forms-sample" id="form_create">
+            <div class="form-group">
+              <label for="name">Admin Name</label>
+              <input type="text" class="form-control" id="name" placeholder="Admin Name">
+            </div>
+
+            <div class="form-group">
+              <label for="email">Admin Email</label>
+              <input type="email" class="form-control" id="email" placeholder="Admin Email">
+            </div>
+
+            <div class="form-group">
+              <label for="psw">Admin Password</label>
+              <input type="password" class="form-control" id="psw" placeholder="Admin Password">
+            </div>
+
+            <button type="submit" id="btn-add" class="btn btn-primary me-2">Add</button>
+            <button type="clear" class="btn btn-light">Cancel</button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+  $(function () {
+    $('#btn-add').click(function () {
+
+      var name = $('#name').val();
+      var email = $('#email').val();
+      var psw = $('#psw').val();
+
+      if (name == "" || email == "" || psw == "") {
+        swal.fire("Add Admin", "Fields are empty!", "warning");
+
+      } else {
+
+        var form_data = new FormData();
+        form_data.append('name', name);
+        form_data.append('email', email);
+        form_data.append('psw', psw);
+
+        $.ajax({
+          url: "/admin/admin/add_admin_details",
+          enctype: 'multipart/form-data',
+          data: form_data,
+          contentType: false,
+          cache: false,
+          processData: false,
+          type: 'POST',
+        })
+          .done(function (data) {
+            if (data.redirect) {
+              window.location.href = data.redirect;
+            }
+            else if (data.success) {
+              Swal.fire("Add Admin", data.success, "success");
+              document.getElementById("form_create").reset();
+            }
+            else if (data.error) {
+              Swal.fire("Add Admin", data.error, "warning");
+            }
+            else {
+              Swal.fire("Add Admin", "Some error occur!", "warning");
+            }
+          });
+
+      }
+
+      event.preventDefault();
+    });
+  });
+
+</script>
+
+{% endblock %}

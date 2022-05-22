@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% block title %}Blood Donation - Home{% endblock %}
+{% block content %}
+
+
+<section id="appointment" data-stellar-background-ratio="3">
+     <div class="container">
+          <div class="row">
+
+               <div class="col-md-6 col-sm-6">
+                    <img src="static/images/appointment-image.jpg" class="img-responsive" alt="">
+               </div>
+
+               <div class="col-md-6 col-sm-6">
+                    <form id="form_create_account" role="form" method="post" action="#">
+
+                         <div class="section-title wow fadeInUp" data-wow-delay="0.4s">
+                              <h2>Sign Up</h2>
+                         </div>
+
+                         <div class="wow fadeInUp" data-wow-delay="0.8s">
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="name">Name</label>
+                                   <input type="text" class="form-control" id="name" name="name"
+                                        placeholder="Full Name">
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="email">Email</label>
+                                   <input type="email" class="form-control" id="email" name="email"
+                                        placeholder="Your Email">
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="dob">DOB</label>
+                                   <input type="date" name="dob" id="dob" value="" class="form-control">
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="gender">Gender</label>
+                                   <select class="form-control" id="gender" name="gender">
+                                        <option>Male</option>
+                                        <option>Female</option>
+                                   </select>
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="b_type">Blood Type</label>
+                                   <select class="form-control" id="b_type" name="b_type">
+                                        <option>A+</option>
+                                        <option>A-</option>
+                                        <option>B+</option>
+                                        <option>B-</option>
+                                        <option>AB+</option>
+                                        <option>AB-</option>
+                                        <option>O+</option>
+                                        <option>O-</option>
+                                   </select>
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="number">Phone Number</label>
+                                   <input type="text" class="form-control" id="number" name="number"
+                                        placeholder="Phone Number">
+                              </div>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <label for="nic">NIC</label>
+                                   <input type="text" class="form-control" id="nic" name="nic" placeholder="NIC">
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="psw">Password</label>
+                                   <input type="password" class="form-control" id="psw" name="psw"
+                                        placeholder="Password">
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="cpsw">Confirm Password</label>
+                                   <input type="password" class="form-control" id="cpsw" name="cpsw"
+                                        placeholder="Confirm Password">
+                              </div>
+
+
+                              <div class="col-md-12 col-sm-12">
+                                   <button type="submit" class="form-control" id="cf-submit" name="create-account">Sign
+                                        Up</button>
+                              </div>
+
+                              <br>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <a href="/sign-up-organization">Are you organization? Organizations Sign Up
+                                        Here</a>
+                              </div>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <br>
+                                   <hr>
+                                   <br>
+                              </div>
+
+
+                              <div class="col-md-12 col-sm-12">
+                                   <a href="/sign-in">If you have account? Sign In
+                                        Here</a>
+                              </div>
+                         </div>
+                    </form>
+               </div>
+
+          </div>
+     </div>
+</section>
+
+
+<script>
+
+     $(function () {
+          $('#cf-submit').click(function () {
+
+               var name = $('#name').val();
+               var email = $('#email').val();
+               var dob = $('#dob').val();
+               var gender = $('#gender').val();
+               var b_type = $('#b_type').val();
+               var number = $('#number').val();
+               var nic = $('#nic').val();
+               var psw = $('#psw').val();
+               var cpsw = $('#cpsw').val();
+
+               if (name == "" || email == "" || dob == "" || gender == "" ||
+                    b_type == "" || number == "" || nic == "" || psw == "" || cpsw == "") {
+                    swal.fire("Sign Up", "Fields are empty!", "warning");
+
+               } else {
+
+                    var form_data = new FormData();
+                    form_data.append('name', name);
+                    form_data.append('email', email);
+                    form_data.append('dob', dob);
+                    form_data.append('gender', gender);
+                    form_data.append('b_type', b_type);
+                    form_data.append('number', number);
+                    form_data.append('nic', nic);
+                    form_data.append('psw', psw);
+                    form_data.append('cpsw', cpsw);
+
+                    $.ajax({
+                         url: "/user_register",
+                         enctype: 'multipart/form-data',
+                         data: form_data,
+                         contentType: false,
+                         cache: false,
+                         processData: false,
+                         type: 'POST',
+                    })
+                         .done(function (data) {
+                              if (data.redirect) {
+                                   window.location.href = data.redirect;
+                              }
+                              else if (data.success) {
+                                   Swal.fire("Sign Up", data.success, "success");
+                                   document.getElementById("form_create_account").reset();
+                              }
+                              else if (data.error) {
+                                   Swal.fire("Sign Up", data.error, "warning");
+                              }
+                              else {
+                                   Swal.fire("Sign Up", "Some error occur!", "warning");
+                              }
+                         });
+
+               }
+
+               event.preventDefault();
+          });
+     });
+
+</script>
+
+{% endblock %}

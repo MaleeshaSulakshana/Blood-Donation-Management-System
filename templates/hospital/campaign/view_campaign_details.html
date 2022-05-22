@@ -1,0 +1,89 @@
+{% extends 'hospital/base.html' %}
+{% block title %}Blood Donation | Hospital | View Campaign Details{% endblock %}
+{% block content %}
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+<div class="content-wrapper">
+  <div class="row">
+
+    <div class="col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">View Campaign Details</h4>
+
+          {% if details %}
+
+          <form class="forms-sample" id="form_create">
+            <div class="form-group">
+              <label for="name">Campaign Name</label>
+              <input type="text" class="form-control" id="name" placeholder="Campaign Name" value="{{ details[0][1] }}"
+                disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="venue">Campaign Venue</label>
+              <input type="text" class="form-control" id="venue" placeholder="Campaign Venue"
+                value="{{ details[0][2] }}" disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="date">Campaign Date</label>
+              <input type="text" class="form-control" id="date" placeholder="Campaign Date" value="{{ details[0][3] }}"
+                disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="stime">Campaign Start Time</label>
+              <input type="text" class="form-control" id="stime" placeholder="Campaign Start Time"
+                value="{{ details[0][4] }}" disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="etime">Campaign End Time</label>
+              <input type="text" class="form-control" id="etime" placeholder="Campaign End Time"
+                value="{{ details[0][5] }}" disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="lat">Campaign Location (Latitude)</label>
+              <input type="text" class="form-control" id="lat" placeholder="Campaign Location (Latitude)"
+                value="{{ details[0][6] }}" disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="long">Campaign Location (Longitude)</label>
+              <input type="text" class="form-control" id="long" placeholder="Campaign Location (Longitude)"
+                value="{{ details[0][7] }}" disabled>
+            </div>
+
+            <button type="button" id="map-btn" onclick="showMap('{{ details[0][6] }}', '{{ details[0][7] }}')"
+              class="btn btn-primary me-2">View On Map</button>
+
+            <div class="form-group">
+              <label for="desc">Description</label>
+              <textarea class="form-control" id="desc" rows="4" placeholder="Description"
+                disabled>{{ details[0][8] }}</textarea>
+            </div>
+
+          </form>
+
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+  function showMap(lat, lng) {
+    var url = "https://maps.google.com/?q=" + lat + "," + lng;
+    window.open(url);
+  }
+
+</script>
+
+{% endblock %}

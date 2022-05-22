@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Blood Donation - Campaigns{% endblock %}
+{% block content %}
+
+
+<section id="appointment" data-stellar-background-ratio="2.5">
+     <div class="container">
+          <div class="row">
+
+               <div class="col-md-12 col-sm-12">
+                    <!-- SECTION TITLE -->
+                    <div class="section-title wow fadeInUp" data-wow-delay="0.1s">
+                         <h2>Up Coming Campaigns</h2>
+                    </div>
+               </div>
+
+
+               {% if details %}
+               {% for item in details %}
+
+               <div class="col-md-6 col-sm-6">
+
+                    <div class="stories-image">
+                         <a href="/campaign-details?id={{ item[0] }}"><img src="static/campaign_images/{{ item[9] }}"
+                                   class="img-responsive" alt=""></a>
+                    </div>
+                    <div class="stories-info">
+                         <a href="/campaign-details?id={{ item[0] }}">
+                              <h5>{{ item[1] }}</h5>
+                         </a>
+                         <span>Location : {{ item[2] }}</span>
+                         <br />
+                         <span>Date : {{ item[3] }}</span>
+                    </div>
+                    <br />
+                    <br />
+                    <br />
+               </div>
+
+               {% endfor %}
+               {% endif %}
+
+          </div>
+
+     </div>
+
+</section>
+
+
+{% endblock %}

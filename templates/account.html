@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% block title %}Blood Donation - Home{% endblock %}
+{% block content %}
+
+
+<section id="appointment" data-stellar-background-ratio="3">
+     <div class="container">
+          <div class="row">
+
+               <div class="col-md-6 col-sm-6">
+                    <img src="static/images/appointment-image.jpg" class="img-responsive" alt="">
+               </div>
+
+               <div class="col-md-6 col-sm-6">
+
+                    <form id="form-account-details" role="form" method="post" action="#">
+
+                         <div class="section-title wow fadeInUp" data-wow-delay="0.4s">
+                              <h2>Account Details</h2>
+                         </div>
+
+                         <div class="wow fadeInUp" data-wow-delay="0.8s">
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="name">Name</label>
+                                   <input type="text" class="form-control" id="name" name="name"
+                                        value="{{ details[0][2] }}" placeholder="Full Name">
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="email">Email</label>
+                                   <input type="email" class="form-control" id="email" name="email"
+                                        value="{{ details[0][1] }}" placeholder="Your Email" disabled>
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="dob">DOB</label>
+                                   <input type="date" id="dob" name="dob" class="form-control"
+                                        value="{{ details[0][3] }}">
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="gender">Gender</label>
+                                   <input type="text" id="gender" name="gender" class="form-control"
+                                        value="{{ details[0][4] }}" disabled>
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="nic">NIC</label>
+                                   <input type="text" class="form-control" id="nic" name="nic"
+                                        value="{{ details[0][7] }}" placeholder="NIC" disabled>
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="number">Phone Number</label>
+                                   <input type="text" class="form-control" id="number" name="number"
+                                        value="{{ details[0][6] }}" placeholder="Phone Number">
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="b_type">Blood Type</label>
+                                   <input type="text" class="form-control" id="b_type" name="b_type"
+                                        value="{{ details[0][5] }}" placeholder="Blood Type" disabled>
+                              </div>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <button type="submit" class="form-control" id="cf-submit" name="submit">Edit
+                                        Profile</button>
+                              </div>
+
+                              <br>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <a href="/psw-change">If you want change account password? Change Password
+                                        Here</a>
+                              </div>
+                         </div>
+                    </form>
+               </div>
+
+          </div>
+     </div>
+</section>
+
+
+<section id="appointment" data-stellar-background-ratio="2.5">
+     <div class="container">
+          <div class="row">
+
+               <div class="col-md-12 col-sm-12">
+                    <div class="section-title wow fadeInUp" data-wow-delay="0.1s">
+                         <h2>Your Donations</h2>
+                    </div>
+               </div>
+
+
+               {% if donations %}
+               {% for item in donations %}
+
+               <div class="col-md-12 col-sm-12">
+
+                    <div class="stories-image">
+                         <a href="#"><img src="static/images/blood.png" class="img-responsive" alt=""></a>
+                    </div>
+                    <div class="stories-info">
+                         <a href="#">
+                              <h5>{{ item[3] }}</h5>
+                         </a>
+                         <span>Units : {{ item[2] }}</span>
+                         <br />
+                         <span>Date : {{ item[4] }}</span>
+                    </div>
+                    <br />
+                    <br />
+                    <br />
+               </div>
+
+               {% endfor %}
+               {% endif %}
+
+          </div>
+
+     </div>
+
+</section>
+
+<script>
+
+     $(function () {
+          $('#cf-submit').click(function () {
+
+               var name = $('#name').val();
+               var dob = $('#dob').val();
+               var number = $('#number').val();
+
+               if (name == "" || dob == "" || number == "") {
+                    swal.fire("Account Details", "Fields are empty!", "warning");
+
+               }
+               else {
+
+                    var form_data = new FormData();
+                    form_data.append('name', name);
+                    form_data.append('dob', dob);
+                    form_data.append('number', number);
+
+                    $.ajax({
+                         url: "/update_user_details",
+                         enctype: 'multipart/form-data',
+                         data: form_data,
+                         contentType: false,
+                         cache: false,
+                         processData: false,
+                         type: 'POST',
+                    })
+                         .done(function (data) {
+                              if (data.redirect) {
+                                   window.location.href = data.redirect;
+                              }
+                              else if (data.success) {
+                                   Swal.fire("Account Details", data.success, "success");
+                                   document.getElementById("form_create_account").reset();
+                              }
+                              else if (data.error) {
+                                   Swal.fire("Account Details", data.error, "warning");
+                              }
+                              else {
+                                   Swal.fire("Account Details", "Some error occur!", "warning");
+                              }
+                         });
+
+               }
+
+               event.preventDefault();
+          });
+     });
+
+</script>
+
+{% endblock %}

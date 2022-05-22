@@ -1,0 +1,278 @@
+{% extends 'base.html' %}
+{% block title %}Blood Donation - Home{% endblock %}
+{% block content %}
+
+
+<!-- HOME -->
+<section id="home" class="slider" data-stellar-background-ratio="0.5">
+     <div class="container">
+          <div class="row">
+
+               <div class="owl-carousel owl-theme">
+                    <div class="item item-first">
+                         <div class="caption">
+                              <div class="col-md-offset-1 col-md-10">
+                                   <h3>Help others for save life</h3>
+                                   <h1>Donate Blood & Save a Life</h1>
+
+                              </div>
+                         </div>
+                    </div>
+
+               </div>
+
+          </div>
+     </div>
+</section>
+
+
+<!-- ABOUT -->
+<section id="about">
+     <div class="container">
+          <div class="row">
+
+               <div class="col-md-6 col-sm-6">
+                    <div class="about-info">
+                         <h2 class="wow fadeInUp" data-wow-delay="0.6s">Welcome to <i class="fa fa-bold"></i>lood
+                              Donation</h2>
+
+                         <div class="wow fadeInUp" data-wow-delay="0.8s">
+                              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam justo neque,
+                                   aliquet sit amet elementum vel, vehicula eget eros. Vivamus arcu metus, mattis
+                                   sed sagittis at, sagittis quis neque. Praesent.</p>
+                              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam justo neque,
+                                   aliquet sit amet elementum vel, vehicula eget eros. Vivamus arcu metus, mattis
+                                   sed sagittis at, sagittis quis neque. Praesent.</p>
+                         </div>
+
+                    </div>
+               </div>
+
+          </div>
+     </div>
+</section>
+
+
+<section id="google-map">
+     <div class="row" id="map" style="width:100%;height:350px;"></div>
+
+</section>
+
+<section id="appointment" data-stellar-background-ratio="3">
+     <div class="container">
+          <div class="row">
+
+               <div class="col-md-6 col-sm-6">
+                    <img src="static/images/appointment-image.jpg" class="img-responsive" alt="">
+               </div>
+
+               <div class="col-md-6 col-sm-6">
+                    <!-- CONTACT FORM HERE -->
+                    <form id="appointment-form" role="form" method="post" action="#">
+
+                         <!-- SECTION TITLE -->
+                         <div class="section-title wow fadeInUp" data-wow-delay="0.4s">
+                              <h2>Detect Diabetic</h2>
+                         </div>
+
+                         <div class="wow fadeInUp" data-wow-delay="0.8s">
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="pregnancies">Pregnancies</label>
+                                   <input type="number" class="form-control" id="pregnancies" name="pregnancies"
+                                        placeholder="Pregnancies">
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="glucose">Glucose</label>
+                                   <input type="number" class="form-control" id="glucose" name="glucose"
+                                        placeholder="Glucose">
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="blood_pressure">BloodPressure</label>
+                                   <input type="number" class="form-control" id="blood_pressure" name="blood_pressure"
+                                        placeholder="BloodPressure">
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="skin_thickness">Skin Thickness</label>
+                                   <input type="number" class="form-control" id="skin_thickness" name="skin_thickness"
+                                        placeholder="Skin Thickness">
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="insulin">Insulin</label>
+                                   <input type="number" class="form-control" id="insulin" name="insulin"
+                                        placeholder="Insulin">
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="bmi">BMI</label>
+                                   <input type="number" class="form-control" id="bmi" name="bmi" placeholder="BMI">
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="diabetes_pedigree_function">Diabetes Pedigree Function</label>
+                                   <input type="number" class="form-control" id="diabetes_pedigree_function"
+                                        name="diabetes_pedigree_function" placeholder="Diabetes Pedigree Function">
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="age">Age</label>
+                                   <input type="number" class="form-control" id="age" name="age" placeholder="Age">
+                              </div>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <button type="submit" class="form-control" id="cf-submit" name="submit">Detect
+                                        Diabetic</button>
+                              </div>
+                         </div>
+                    </form>
+               </div>
+
+          </div>
+     </div>
+</section>
+
+
+<script>
+
+     $(function () {
+
+          const locations = [];
+
+          // Forces point on map
+          var center = new google.maps.LatLng(6.8209928680226835, 80.04000313717783);
+
+          // Zoom google map on location
+          var map = new google.maps.Map(document.getElementById('map'), {
+               zoom: 11,
+               center: center,
+               mapTypeId: google.maps.MapTypeId.ROADMAP
+          });
+
+          var infowindow = new google.maps.InfoWindow();
+          var marker;
+
+          $.ajax({
+               url: '/all_campaigns',
+               data: {},
+               type: 'GET',
+          })
+               .done(function (data) {
+
+                    let index = 0;
+                    data.forEach(function (value) {
+
+                         var latitude = value[6];
+                         var longitude = value[7];
+
+                         var color = "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+
+                         // Append data to the array
+                         locations.push(['' + value[1] + '<br>\<a href="campaign-details?id=' + value[0] + '">Details</a>',
+                              latitude, longitude, color, index]);
+
+                         index += 1;
+
+                    });
+
+                    if (locations.length != 0) {
+                         // Set location on google map
+                         for (i = 0; i < locations.length; i++) {
+
+                              marker = new google.maps.Marker({
+                                   position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+                                   map: map,
+                                   icon: locations[i][3],
+
+                              });
+
+                              google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                                   return function () {
+                                        infowindow.setContent(locations[i][0]);
+                                        infowindow.open(map, marker);
+                                   }
+                              })(marker, i));
+
+                         }
+
+                    }
+
+
+               });
+
+     })
+
+
+
+     $(function () {
+          $('#cf-submit').click(function () {
+
+               var pregnancies = $('#pregnancies').val();
+               var glucose = $('#glucose').val();
+               var blood_pressure = $('#blood_pressure').val();
+               var skin_thickness = $('#skin_thickness').val();
+               var insulin = $('#insulin').val();
+               var bmi = $('#bmi').val();
+               var diabetes_pedigree_function = $('#diabetes_pedigree_function').val();
+               var age = $('#age').val();
+
+               if (pregnancies == "" || glucose == "" || blood_pressure == "" || skin_thickness == "" ||
+                    insulin == "" || bmi == "" || diabetes_pedigree_function == "" || age == "") {
+                    swal.fire("Detect Diabetic", "Fields are empty!", "warning");
+
+               } else {
+
+                    var form_data = new FormData();
+                    form_data.append('pregnancies', pregnancies);
+                    form_data.append('glucose', glucose);
+                    form_data.append('blood_pressure', blood_pressure);
+                    form_data.append('skin_thickness', skin_thickness);
+                    form_data.append('insulin', insulin);
+                    form_data.append('bmi', bmi);
+                    form_data.append('diabetes_pedigree_function', diabetes_pedigree_function);
+                    form_data.append('age', age);
+
+                    $.ajax({
+                         url: "/detect_diabetic",
+                         enctype: 'multipart/form-data',
+                         data: form_data,
+                         contentType: false,
+                         cache: false,
+                         processData: false,
+                         type: 'POST',
+                    })
+                         .done(function (data) {
+                              if (data.prediction) {
+                                   Swal.fire("Detect Diabetic", data.prediction, "success");
+                                   $('#pregnancies').val("");
+                                   $('#glucose').val("");
+                                   $('#blood_pressure').val("");
+                                   $('#skin_thickness').val("");
+                                   $('#insulin').val("");
+                                   $('#bmi').val("");
+                                   $('#diabetes_pedigree_function').val("");
+                                   $('#age').val("");
+                              }
+                              else if (data.error) {
+                                   Swal.fire("Detect Diabetic", data.error, "warning");
+                              }
+                              else {
+                                   Swal.fire("Detect Diabetic", "Some error occur!", "warning");
+                              }
+                         });
+
+               }
+
+               event.preventDefault();
+          });
+     });
+
+
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=&callback=lectureMap"></script>
+
+
+{% endblock %}

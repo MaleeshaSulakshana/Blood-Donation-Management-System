@@ -1,0 +1,89 @@
+{% extends 'admin/base.html' %}
+{% block title %}Blood Donation | Admin | Change Password{% endblock %}
+{% block content %}
+
+<div class="content-wrapper">
+  <div class="row">
+
+    <div class="col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Change Password</h4>
+
+          <form class="forms-sample" id="form_create">
+            <div class="form-group">
+              <label for="psw">Password</label>
+              <input type="password" class="form-control" id="psw" placeholder="Password">
+            </div>
+
+            <div class="form-group">
+              <label for="cpsw">Confirm Password</label>
+              <input type="password" class="form-control" id="cpsw" placeholder="Confirm Password">
+            </div>
+
+            <button type="button" class="btn btn-primary me-2" id="btnUpdate">Update</button>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+
+  $(function () {
+    $('#btnUpdate').click(function () {
+
+      var psw = $('#psw').val();
+      var cpsw = $('#cpsw').val();
+
+      if (psw == "" || cpsw == "") {
+        swal.fire("Change Password", "Fields are empty!", "warning");
+
+      } else if (psw != cpsw) {
+        swal.fire("Change Password", "Password and confirm password not matched", "warning");
+
+      } else {
+
+        var form_data = new FormData();
+        form_data.append('psw', psw);
+        form_data.append('cpsw', cpsw);
+
+        $.ajax({
+          url: "/admin/profile/update_psw",
+          enctype: 'multipart/form-data',
+          data: form_data,
+          contentType: false,
+          cache: false,
+          processData: false,
+          type: 'POST',
+        })
+          .done(function (data) {
+            if (data.redirect) {
+              window.location.href = data.redirect;
+            }
+            else if (data.success) {
+              Swal.fire("Change Password", data.success, "success");
+              document.getElementById("form_create").reset();
+            }
+            else if (data.error) {
+              Swal.fire("Change Password", data.error, "warning");
+            }
+            else {
+              Swal.fire("Change Password", "Some error occur!", "warning");
+            }
+          });
+
+      }
+
+      event.preventDefault();
+    });
+  });
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'organization/base.html' %}
+{% block title %}Blood Donation | Organization | Pending Campaigns{% endblock %}
+{% block content %}
+
+<div class="content-wrapper">
+  <div class="row">
+
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Pending Campaigns</h4>
+
+
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Thumbnail</th>
+                <th>Title</th>
+                <th>Venue</th>
+                <th>Date</th>
+                <th>Start time</th>
+                <th>End time</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+
+              {% if campaigns %}
+              {% for item in campaigns %}
+              <tr>
+                <td class="py-1">
+                  <img src="static/campaign_images/{{ item[9] }}" alt="image" />
+                </td>
+                <td>{{ item[1] }}</td>
+                <td>{{ item[2] }}</td>
+                <td>{{ item[3] }}</td>
+                <td>{{ item[4] }}</td>
+                <td>{{ item[5] }}</td>
+                <td>
+                  <a href="/organization/campaign/view?id={{ item[0] }}" class="btn btn-secondary">VIEW</a>
+                </td>
+              </tr>
+              {% endfor %}
+              {% else %}
+
+              <tr>
+                <td colspan="7">
+                  <center>No Pending Campaigns</center>
+                </td>
+              </tr>
+
+              {% endif %}
+
+            </tbody>
+          </table>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

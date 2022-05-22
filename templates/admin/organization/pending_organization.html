@@ -1,0 +1,62 @@
+{% extends 'admin/base.html' %}
+{% block title %}Blood Donation | Admin | Pending Organizations{% endblock %}
+{% block content %}
+
+<div class="content-wrapper">
+  <div class="row">
+
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Pending Organizations</h4>
+
+
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Organization Name</th>
+                <th>Email</th>
+                <th>HOD</th>
+                <th>Location</th>
+                <th>Number</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+
+              {% if details %}
+              {% for item in details %}
+              <tr>
+                <td>{{ item[1] }}</td>
+                <td>{{ item[0] }}</td>
+                <td>{{ item[2] }}</td>
+                <td>{{ item[3] }}</td>
+                <td>{{ item[4] }}</td>
+                <td>
+                  <a href="/admin/organization/view?id={{ item[0] }}" class="btn btn-secondary">VIEW</a>
+                </td>
+              </tr>
+              {% endfor %}
+              {% else %}
+
+              <tr>
+                <td colspan="7">
+                  <center>No Pending Organizations</center>
+                </td>
+              </tr>
+
+              {% endif %}
+
+            </tbody>
+          </table>
+
+        </div>
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

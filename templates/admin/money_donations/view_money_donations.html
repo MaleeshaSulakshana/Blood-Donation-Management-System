@@ -1,0 +1,108 @@
+{% extends 'admin/base.html' %}
+{% block title %}Blood Donation | Admin | View Money Donations{% endblock %}
+{% block content %}
+
+<style>
+  .ui-datepicker-calendar {
+    display: none;
+  }
+</style>
+
+<div class="content-wrapper">
+  <div class="row">
+
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">View Money Donations</h4>
+
+        <div class="col-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+
+              <form class="forms-sample" id="form_create">
+                <div class="form-group">
+                  <label for="month">View Month</label>
+                  <input type="date" class="form-control monthPicker" id="month" placeholder="View Month">
+                </div>
+
+                <button type="submit" id="btn-view" class="btn btn-primary me-2">View</button>
+
+              </form>
+            </div>
+          </div>
+        </div>
+
+
+        {% if month %}
+        <div class="form-group">
+          <label for="selectedDate">Month</label>
+          <input type="text" class="form-control" id="selectedDate" value="{{ month }}" disabled>
+        </div>
+        {% endif %}
+
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Payment Id</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              {% if details %}
+              {% for item in details %}
+              <tr>
+                <td>{{ item[2] }}</td>
+                <td>{{ item[1] }}</td>
+                <td>{{ item[4] }}</td>
+                <td>{{ item[5] }}</td>
+                <td>{{ item[6] }}</td>
+              </tr>
+              {% endfor %}
+              {% else %}
+
+              <tr>
+                <td colspan="6">
+                  <center>No Money Donations</center>
+                </td>
+              </tr>
+
+              {% endif %}
+
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="text/javascript">
+
+  $(function () {
+    $('#btn-view').click(function () {
+
+      var month = $('#month').val();
+
+      if (month == "") {
+        swal.fire("View Money Donations", "Fields are empty!", "warning");
+
+      } else {
+
+        window.location.href = "/admin/money_donations?month=" + month;
+
+      }
+
+      event.preventDefault();
+    });
+  });
+
+</script>
+
+{% endblock %}

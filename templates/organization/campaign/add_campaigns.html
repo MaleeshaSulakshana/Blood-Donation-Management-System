@@ -1,0 +1,142 @@
+{% extends 'organization/base.html' %}
+{% block title %}Blood Donation | Organization | Add Campaign{% endblock %}
+{% block content %}
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+<div class="content-wrapper">
+  <div class="row">
+
+    <div class="col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Add Campaign</h4>
+
+          <form class="forms-sample" id="form_create">
+            <div class="form-group">
+              <label for="name">Campaign Name</label>
+              <input type="text" class="form-control" id="name" placeholder="Campaign Name">
+            </div>
+
+            <div class="form-group">
+              <label for="venue">Campaign Venue</label>
+              <input type="text" class="form-control" id="venue" placeholder="Campaign Venue">
+            </div>
+
+            <div class="form-group">
+              <label for="date">Campaign Date</label>
+              <input type="date" class="form-control" id="date" placeholder="Campaign Date">
+            </div>
+
+            <div class="form-group">
+              <label for="stime">Campaign Start Time</label>
+              <input type="time" class="form-control" id="stime" placeholder="Campaign Start Time">
+            </div>
+
+            <div class="form-group">
+              <label for="etime">Campaign End Time</label>
+              <input type="time" class="form-control" id="etime" placeholder="Campaign End Time">
+            </div>
+
+            <div class="form-group">
+              <label for="lat">Campaign Location (Latitude)</label>
+              <input type="text" class="form-control" id="lat" placeholder="Campaign Location (Latitude)">
+            </div>
+
+            <div class="form-group">
+              <label for="long">Campaign Location (Longitude)</label>
+              <input type="text" class="form-control" id="long" placeholder="Campaign Location (Longitude)">
+            </div>
+
+            <div class="form-group">
+              <label for="desc">Description</label>
+              <textarea class="form-control" id="desc" rows="4" placeholder="Description"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Image Upload</label>
+              <input type="file" name="img[]" id="thumbnail" class="file-upload-default">
+              <div class="input-group col-xs-12">
+                <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
+                <span class="input-group-append">
+                  <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                </span>
+              </div>
+            </div>
+
+            <button type="submit" id="btn-add" class="btn btn-primary me-2">Add</button>
+            <button type="clear" class="btn btn-light">Cancel</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+  $(function () {
+    $('#btn-add').click(function () {
+
+      var name = $('#name').val();
+      var venue = $('#venue').val();
+      var date = $('#date').val();
+      var stime = $('#stime').val();
+      var etime = $('#etime').val();
+      var lat = $('#lat').val();
+      var long = $('#long').val();
+      var desc = $('#desc').val();
+
+      if (name == "" || venue == "" || date == "" || stime == "" || etime == "" ||
+        lat == "" || long == "" || desc == "" ||
+        $('#thumbnail').val() == "") {
+        swal.fire("Add Campaign", "Fields are empty!", "warning");
+
+      } else {
+
+        var form_data = new FormData();
+        form_data.append('name', name);
+        form_data.append('venue', venue);
+        form_data.append('date', date);
+        form_data.append('stime', stime);
+        form_data.append('etime', etime);
+        form_data.append('lat', lat);
+        form_data.append('long', long);
+        form_data.append('desc', desc);
+        form_data.append('thumbnail', $('#thumbnail').prop('files')[0]);
+
+        $.ajax({
+          url: "/organization/campaign/add_campaign_details",
+          enctype: 'multipart/form-data',
+          data: form_data,
+          contentType: false,
+          cache: false,
+          processData: false,
+          type: 'POST',
+        })
+          .done(function (data) {
+            if (data.redirect) {
+              window.location.href = data.redirect;
+            }
+            else if (data.success) {
+              Swal.fire("Add Campaign", data.success, "success");
+              document.getElementById("form_create").reset();
+            }
+            else if (data.error) {
+              Swal.fire("Add Campaign", data.error, "warning");
+            }
+            else {
+              Swal.fire("Add Campaign", "Some error occur!", "warning");
+            }
+          });
+
+      }
+
+      event.preventDefault();
+    });
+  });
+
+</script>
+
+{% endblock %}

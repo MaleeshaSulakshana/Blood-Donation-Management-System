@@ -1,0 +1,262 @@
+{% extends 'organization/base.html' %}
+{% block title %}Blood Donation | Organization | View Donor Details{% endblock %}
+{% block content %}
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+<div class="content-wrapper">
+  <div class="row">
+
+    <div class="col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Add Donor</h4>
+
+          {% if details %}
+
+          <form class="forms-sample" id="form_create">
+            <div class="form-group">
+              <label for="name">Donor Name</label>
+              <input type="text" class="form-control" id="name" placeholder="Donor Name" value="{{ details[0][2] }}"
+                disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Donor Email</label>
+              <input type="text" class="form-control" id="email" placeholder="Donor Email" value="{{ details[0][1] }}"
+                disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="dob">Donor Dob</label>
+              <input type="text" class="form-control" id="dob" placeholder="Donor Dob" value="{{ details[0][3] }}"
+                disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="gender">Donor Gender</label>
+              <input type="text" class="form-control" id="gender" placeholder="Donor Gender" value="{{ details[0][4] }}"
+                disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="b_type">Donor Blood Type</label>
+              <input type="text" class="form-control" id="b_type" placeholder="Donor Blood Type"
+                value="{{ details[0][5] }}" disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="number">Donor Phone Number</label>
+              <input type="text" class="form-control" id="number" placeholder="Donor Phone Number"
+                value="{{ details[0][6] }}" disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="nic">Donor Nic</label>
+              <input type="text" class="form-control" id="nic" placeholder="Donor Nic" value="{{ details[0][7] }}"
+                disabled>
+            </div>
+
+            {% if details[0][8] == 0 %}
+            <button type="button" onclick="approve('{{ details[0][8] }}')"
+              class="btn btn-primary me-2">Approved</button>
+            {% endif %}
+
+          </form>
+
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  {% if campaign_id != None %}
+
+  <div class="row">
+
+    <div class="col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Add Donation Details</h4>
+
+          <form class="forms-sample" id="form_create">
+            <div class="form-group">
+              <label for="id">Campaign Id</label>
+              <input type="text" class="form-control" id="id" value="{{ campaign_id }}" placeholder="Campaign Id"
+                disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="units">Campaign Units</label>
+              <input type="int" class="form-control" id="units" placeholder="Campaign Units">
+            </div>
+
+            <button type="submit" onclick="add_donation('{{ campaign_id }}')" class="btn btn-primary me-2">Add</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  {% endif %}
+
+  <div class="row">
+
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Donations</h4>
+
+
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Campaign</th>
+                <th>Date</th>
+                <th>Donated Qty</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              {% if donations %}
+              {% for item in donations %}
+              <tr>
+                <td>{{ item[3] }}</td>
+                <td>{{ item[4] }}</td>
+                <td>{{ item[2] }}</td>
+              </tr>
+              {% endfor %}
+              {% else %}
+
+              <tr>
+                <td colspan="6">
+                  <center>No Donations</center>
+                </td>
+              </tr>
+
+              {% endif %}
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+  function approve($userId) {
+
+    var form_data = new FormData();
+    form_data.append('id', $userId);
+
+    $.ajax({
+      url: "/organization/donor/update_user_approval",
+      enctype: 'multipart/form-data',
+      data: form_data,
+      contentType: false,
+      cache: false,
+      processData: false,
+      type: 'POST',
+    })
+      .done(function (data) {
+        if (data.redirect) {
+          window.location.href = data.redirect;
+        }
+        else if (data.success) {
+          Swal.fire("User Approval", data.success, "success");
+          location.reload();
+        }
+        else if (data.error) {
+          Swal.fire("User Approval", data.error, "warning");
+        }
+        else {
+          Swal.fire("User Approval", "Some error occur!", "warning");
+        }
+      });
+
+    event.preventDefault();
+  }
+
+  function add_donation($campaign_id) {
+
+    var donor_email = $('#email').val();
+    var units = $('#units').val();
+
+    if (donor_email == "" || units == "") {
+      swal.fire("Add Donation", "Fields are empty!", "warning");
+
+    } else {
+
+      var form_data = new FormData();
+      form_data.append('campaign_id', $campaign_id);
+      form_data.append('units', units);
+      form_data.append('donor_email', donor_email);
+
+      $.ajax({
+        url: "/organization/donor/add_donation_details",
+        enctype: 'multipart/form-data',
+        data: form_data,
+        contentType: false,
+        cache: false,
+        processData: false,
+        type: 'POST',
+      })
+        .done(function (data) {
+          if (data.redirect) {
+            window.location.href = data.redirect;
+          }
+          else if (data.success) {
+            Swal.fire("Add Donation", data.success, "success");
+            document.getElementById("form_create").reset();
+          }
+          else if (data.error) {
+            Swal.fire("Add Donation", data.error, "warning");
+          }
+          else {
+            Swal.fire("Add Donation", "Some error occur!", "warning");
+          }
+        });
+
+
+      event.preventDefault();
+
+    }
+
+
+    // $.ajax({
+    //   url: "/organization/donor/update_user_approval",
+    //   enctype: 'multipart/form-data',
+    //   data: form_data,
+    //   contentType: false,
+    //   cache: false,
+    //   processData: false,
+    //   type: 'POST',
+    // })
+    //   .done(function (data) {
+    //     if (data.redirect) {
+    //       window.location.href = data.redirect;
+    //     }
+    //     else if (data.success) {
+    //       Swal.fire("User Approval", data.success, "success");
+    //       location.reload();
+    //     }
+    //     else if (data.error) {
+    //       Swal.fire("User Approval", data.error, "warning");
+    //     }
+    //     else {
+    //       Swal.fire("User Approval", "Some error occur!", "warning");
+    //     }
+    //   });
+
+  }
+
+</script>
+
+{% endblock %}

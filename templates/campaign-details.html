@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% block title %}Blood Donation - Campaign Details{% endblock %}
+{% block content %}
+
+
+<section id="appointment" data-stellar-background-ratio="3">
+     <div class="container">
+          {% if details %}
+
+          <div class="row">
+
+               <div class="col-md-6 col-sm-6">
+                    <img src="static/campaign_images/{{ details[0][9] }}" class="img-responsive" alt="">
+
+                    <br />
+                    <br />
+
+                    <form id="appointment-form" role="form" method="post" action="#">
+
+                         <!-- SECTION TITLE -->
+                         <div class="section-title wow fadeInUp" data-wow-delay="0.4s">
+                              <h2>Campaign Details</h2>
+                         </div>
+
+                         <div class="wow fadeInUp" data-wow-delay="0.8s">
+                              <div class="col-md-12 col-sm-12">
+                                   <label for="title">Title</label>
+                                   <input type="text" class="form-control" id="title" name="title" placeholder="Title"
+                                        value="{{ details[0][1] }}" disabled>
+                              </div>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <label for="venue">Venue</label>
+                                   <input type="text" class="form-control" id="venue" name="venue" placeholder="Venue"
+                                        value="{{ details[0][2] }}" disabled>
+                              </div>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <label for="date">Date</label>
+                                   <input type="text" class="form-control" id="date" name="date" placeholder="Date"
+                                        value="{{ details[0][3] }}" disabled>
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="start">Start Time</label>
+                                   <input type="text" class="form-control" id="start" name="start"
+                                        placeholder="Start Time" value="{{ details[0][4] }}" disabled>
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="end">End Time</label>
+                                   <input type="text" class="form-control" id="end" name="end" placeholder="End Time"
+                                        value="{{ details[0][5] }}" disabled>
+                              </div>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <button type="button" class="form-control" id="cf-submit"
+                                        onclick='showMap("{{ details[0][6] }}", "{{ details[0][7] }}")'
+                                        name="button">View
+                                        Location</button>
+                              </div>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <label for="desc">Description</label>
+                                   <textarea class="form-control" id="desc" name="desc"
+                                        disabled>{{ details[0][8] }}</textarea>
+                              </div>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <label for="organization">Organization</label>
+                                   <input type="text" name="organization" value="{{ details[0][11] }}"
+                                        class="form-control" placeholder="Organization" disabled>
+                              </div>
+
+                         </div>
+                    </form>
+
+               </div>
+
+               {% if donor %}
+               <div class="col-md-6 col-sm-6">
+
+                    <form id="appointment-form" role="form" method="post" action="#">
+
+                         <div class="section-title wow fadeInUp" data-wow-delay="0.4s">
+                              <h2>Make Your Appointments</h2>
+                         </div>
+
+                         <div class="wow fadeInUp" data-wow-delay="0.8s">
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="name">Name</label>
+                                   <input type="text" class="form-control" id="name" name="name"
+                                        value="{{ donor[0][2] }}" placeholder="Full Name" disabled>
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="email">Email</label>
+                                   <input type="email" class="form-control" id="email" name="email"
+                                        value="{{ donor[0][1] }}" placeholder="Your Email" disabled>
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="name">NIC</label>
+                                   <input type="text" class="form-control" id="name" name="name" placeholder="NIC"
+                                        value="{{ donor[0][7] }}" disabled>
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="name">Phone Number</label>
+                                   <input type="text" class="form-control" id="name" name="name"
+                                        value="{{ donor[0][6] }}" placeholder="Phone Number" disabled>
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="dob">DOB</label>
+                                   <input type="text" name="dob" class="form-control" placeholder="DOB"
+                                        value="{{ donor[0][3] }}" disabled>
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="gender">Gender</label>
+                                   <input type="text" name="gender" class="form-control" placeholder="Gender"
+                                        value="{{ donor[0][4] }}" disabled>
+                              </div>
+
+                              <div class="col-md-6 col-sm-6">
+                                   <label for="">Date Of Campaign</label>
+                                   <input type="text" class="form-control" id="date" name="date" placeholder="Date"
+                                        value="{{ details[0][3] }}" disabled>
+                              </div>
+
+
+                              {% if is_exist %}
+                              {% if is_exist == '0' %}
+
+                              <div class="col-md-12 col-sm-12">
+                                   <button type="submit" class="form-control" id="cf-submit" name="submit"
+                                        onclick="add_appointment('{{ details[0][0] }}', '{{ donor[0][1] }}')">Make
+                                        Appointment</button>
+                              </div>
+
+                              {% else %}
+
+                              <div class="col-md-12 col-sm-12">
+                                   <button type="submit" class="form-control" id="cf-submit" name="submit"
+                                        onclick="remove_appointment('{{ details[0][0] }}', '{{ donor[0][1] }}')">Remove
+                                        Appointment</button>
+                              </div>
+
+                              {% endif %}
+                              {% endif %}
+
+                         </div>
+
+
+               </div>
+
+               {% else %}
+               <div class="col-md-6 col-sm-6">
+                    <label>Please sign in for make appointment.</label>
+               </div>
+
+               {% endif %}
+
+          </div>
+          {% endif %}
+
+     </div>
+
+</section>
+
+<script>
+
+     function showMap(lat, lng) {
+          var url = "https://maps.google.com/?q=" + lat + "," + lng;
+          window.open(url);
+     }
+
+     function add_appointment($campaign_id, $donor) {
+
+          var form_data = new FormData();
+          form_data.append('campaign_id', $campaign_id);
+          form_data.append('donor', $donor);
+
+          $.ajax({
+               url: "/add_appointment",
+               enctype: 'multipart/form-data',
+               data: form_data,
+               contentType: false,
+               cache: false,
+               processData: false,
+               type: 'POST',
+          })
+               .done(function (data) {
+                    if (data.redirect) {
+                         window.location.href = data.redirect;
+                    }
+                    else if (data.success) {
+                         Swal.fire("Make Appointment", data.success, "success");
+                         window.location.reload();
+                    }
+                    else if (data.error) {
+                         Swal.fire("Make Appointment", data.error, "warning");
+                    }
+                    else {
+                         Swal.fire("Make Appointment", "Some error occur!", "warning");
+                    }
+               });
+
+          event.preventDefault();
+     }
+
+     function remove_appointment($campaign_id, $donor) {
+
+          var form_data = new FormData();
+          form_data.append('campaign_id', $campaign_id);
+          form_data.append('donor', $donor);
+
+          $.ajax({
+               url: "/remove_appointment",
+               enctype: 'multipart/form-data',
+               data: form_data,
+               contentType: false,
+               cache: false,
+               processData: false,
+               type: 'POST',
+          })
+               .done(function (data) {
+                    if (data.redirect) {
+                         window.location.href = data.redirect;
+                    }
+                    else if (data.success) {
+                         Swal.fire("Remove Appointment", data.success, "success");
+                         window.location.reload();
+                    }
+                    else if (data.error) {
+                         Swal.fire("Remove Appointment", data.error, "warning");
+                    }
+                    else {
+                         Swal.fire("Remove Appointment", "Some error occur!", "warning");
+                    }
+               });
+
+          event.preventDefault();
+     }
+
+</script>
+
+
+{% endblock %}

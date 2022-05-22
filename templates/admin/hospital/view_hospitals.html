@@ -1,0 +1,58 @@
+{% extends 'admin/base.html' %}
+{% block title %}Blood Donation | Admin | View Hospitals{% endblock %}
+{% block content %}
+
+<div class="content-wrapper">
+  <div class="row">
+
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">View Hospitals</h4>
+
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Location</th>
+                <th>Contact</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+
+              {% if details %}
+              {% for item in details %}
+              <tr>
+                <td>{{ item[1] }}</td>
+                <td>{{ item[0] }}</td>
+                <td>{{ item[2] }}</td>
+                <td>{{ item[3] }}</td>
+                <td>
+                  <a href="/admin/hospital/view?id={{ item[0] }}" class="btn btn-secondary">VIEW</a>
+                </td>
+              </tr>
+              {% endfor %}
+              {% else %}
+
+              <tr>
+                <td colspan="6">
+                  <center>No Hospitals</center>
+                </td>
+              </tr>
+
+              {% endif %}
+
+            </tbody>
+          </table>
+        </div>
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

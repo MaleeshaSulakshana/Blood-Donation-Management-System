@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% block title %}Blood Donation - Home{% endblock %}
+{% block content %}
+
+
+<section id="appointment" data-stellar-background-ratio="3">
+     <div class="container">
+          <div class="row">
+
+               <div class="col-md-6 col-sm-6">
+                    <img src="static/images/appointment-image.jpg" class="img-responsive" alt="">
+               </div>
+
+               <div class="col-md-6 col-sm-6">
+
+                    {% if details %}
+
+                    <form id="form-psw-change" role="form" method="post" action="#">
+
+                         <div class="section-title wow fadeInUp" data-wow-delay="0.4s">
+                              <h2>Account Password Change</h2>
+                         </div>
+
+                         <div class="wow fadeInUp" data-wow-delay="0.8s">
+
+                              <div class="col-md-12 col-sm-12">
+                                   <label for="email">Email</label>
+                                   <input type="email" class="form-control" id="email" name="email"
+                                        value="{{ details[0][1] }}" placeholder="Email" disabled>
+                              </div>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <label for="psw">New Password</label>
+                                   <input type="password" class="form-control" id="psw" name="psw"
+                                        placeholder="New Password">
+                              </div>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <label for="cpsw">Confirm Password</label>
+                                   <input type="password" class="form-control" id="cpsw" name="cpsw"
+                                        placeholder="Confirm Password">
+                              </div>
+
+
+                              <div class="col-md-12 col-sm-12">
+                                   <button type="submit" class="form-control" id="cf-submit" name="submit">Change
+                                        Password</button>
+                              </div>
+
+                              <br>
+
+                         </div>
+                    </form>
+
+                    {% endif %}
+
+               </div>
+
+          </div>
+     </div>
+</section>
+
+
+<script>
+
+     $(function () {
+          $('#cf-submit').click(function () {
+
+               var psw = $('#psw').val();
+               var cpsw = $('#cpsw').val();
+
+               if (psw == "" || cpsw == "") {
+                    swal.fire("Password Change", "Fields are empty!", "warning");
+
+               } else {
+
+                    var form_data = new FormData();
+                    form_data.append('psw', psw);
+                    form_data.append('cpsw', cpsw);
+
+                    $.ajax({
+                         url: "/update_user_psw",
+                         enctype: 'multipart/form-data',
+                         data: form_data,
+                         contentType: false,
+                         cache: false,
+                         processData: false,
+                         type: 'POST',
+                    })
+                         .done(function (data) {
+                              if (data.redirect) {
+                                   window.location.href = data.redirect;
+                              }
+                              else if (data.success) {
+                                   Swal.fire("Password Change", data.success, "success");
+                                   $('#psw').val("");
+                                   $('#cpsw').val("");
+                              }
+                              else if (data.error) {
+                                   Swal.fire("Password Change", data.error, "warning");
+                              }
+                              else {
+                                   Swal.fire("Password Change", "Some error occur!", "warning");
+                              }
+                         });
+
+               }
+
+               event.preventDefault();
+          });
+     });
+
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'organization/base.html' %}
+{% block title %}Blood Donation | Organization | Pending Donors{% endblock %}
+{% block content %}
+
+<div class="content-wrapper">
+  <div class="row">
+
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Pending Donors</h4>
+
+
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Gender</th>
+                <th>Blood Type</th>
+                <th>Phone Number</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              {% if donors %}
+              {% for item in donors %}
+              <tr>
+                <td>{{ item[2] }}</td>
+                <td>{{ item[1] }}</td>
+                <td>{{ item[4] }}</td>
+                <td>{{ item[5] }}</td>
+                <td>{{ item[6] }}</td>
+                <td>
+                  <a href="/organization/donor/view-donor-details?id={{ item[1] }}" class="btn btn-secondary">VIEW</a>
+                </td>
+              </tr>
+              {% endfor %}
+              {% else %}
+
+              <tr>
+                <td colspan="6">
+                  <center>No Pending Donors</center>
+                </td>
+              </tr>
+
+              {% endif %}
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+{% endblock %}

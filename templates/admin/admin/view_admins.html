@@ -1,0 +1,92 @@
+{% extends 'admin/base.html' %}
+{% block title %}Blood Donation | Admin | View Admins{% endblock %}
+{% block content %}
+
+<div class="content-wrapper">
+  <div class="row">
+
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">View Admins</h4>
+
+
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+
+              {% if details %}
+              {% for item in details %}
+              <tr>
+                <td>{{ item[1] }}</td>
+                <td>{{ item[0] }}</td>
+                <td>
+                  <button class="btn btn-secondary" onclick="deleteAdmin('{{ item[0] }}')">DELETE</button>
+                </td>
+              </tr>
+              {% endfor %}
+              {% else %}
+
+              <tr>
+                <td colspan="6">
+                  <center>No Admins</center>
+                </td>
+              </tr>
+
+              {% endif %}
+
+            </tbody>
+          </table>
+        </div>
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+  function deleteAdmin($adminId) {
+
+    var form_data = new FormData();
+    form_data.append('id', $adminId);
+
+    $.ajax({
+      url: "/admin/admin/remove_admin",
+      enctype: 'multipart/form-data',
+      data: form_data,
+      contentType: false,
+      cache: false,
+      processData: false,
+      type: 'POST',
+    })
+      .done(function (data) {
+        if (data.redirect) {
+          window.location.href = data.redirect;
+        }
+        else if (data.success) {
+          Swal.fire("Admin Remove", data.success, "success");
+          location.reload();
+        }
+        else if (data.error) {
+          Swal.fire("Admin Remove", data.error, "warning");
+        }
+        else {
+          Swal.fire("Admin Remove", "Some error occur!", "warning");
+        }
+      });
+
+    event.preventDefault();
+  }
+
+</script>
+
+{% endblock %}

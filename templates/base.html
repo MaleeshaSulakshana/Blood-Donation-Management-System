@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	<title>{% block title %}{% endblock %}</title>
+
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="Tooplate">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link rel="stylesheet" href="static/css/bootstrap.min.css">
+	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/css/bootstrap.min.css"> -->
+	<link rel="stylesheet" href="static/css/font-awesome.min.css">
+	<link rel="stylesheet" href="static/css/animate.css">
+	<link rel="stylesheet" href="static/css/owl.carousel.css">
+	<link rel="stylesheet" href="static/css/owl.theme.default.min.css">
+
+	<!-- MAIN CSS -->
+	<link rel="stylesheet" href="static/css/tooplate-style.css">
+
+	<script src="static/js/jquery.js"></script>
+	<script src="static/js/sweetalert2@11.js"></script>
+
+</head>
+
+<body id="top" data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
+
+	<!-- PRE LOADER -->
+	<section class="preloader">
+		<div class="spinner">
+
+			<span class="spinner-rotate"></span>
+
+		</div>
+	</section>
+
+
+	<!-- HEADER -->
+	<header>
+		<div class="container">
+			<div class="row">
+
+				<div class="col-md-4 col-sm-5">
+					<p>Welcome to a Professional Blood Donation</p>
+				</div>
+
+				<div class="col-md-8 col-sm-7 text-align-right">
+					<span class="phone-icon"><i class="fa fa-phone"></i> 077 382 9768</span>
+					<span class="email-icon"><i class="fa fa-envelope-o"></i> <a href="#">
+							blooddonationnsbm@gmail.com</a></span>
+				</div>
+
+			</div>
+		</div>
+	</header>
+
+
+	<!-- MENU -->
+	<section class="navbar navbar-default navbar-static-top" role="navigation">
+		<div class="container">
+
+			<div class="navbar-header">
+				<button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="icon icon-bar"></span>
+					<span class="icon icon-bar"></span>
+					<span class="icon icon-bar"></span>
+				</button>
+
+				<!-- lOGO TEXT HERE -->
+				<a href="/index" class="navbar-brand"><i class="fa fa-bold"></i>lood Donation</a>
+			</div>
+
+			<!-- MENU LINKS -->
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="/index#top" class="smoothScroll">Home</a></li>
+					<li><a href="/index#about" class="smoothScroll">About Us</a></li>
+					<li><a href="/organizations" class="smoothScroll">Organizations</a></li>
+					<li><a href="/campaigns" class="smoothScroll">Campaigns</a></li>
+					<li><a href="/emergency" class="smoothScroll">Emergency</a></li>
+					<li><a href="/money-donation" class="smoothScroll">Money Donation</a></li>
+
+					{% if 'userId' in session %}
+					<li><a href="/appointments" class="smoothScroll">Your Appointments</a></li>
+					<li><a href="/account" class="smoothScroll">Account</a></li>
+					<li><a href="/sign-out" class="smoothScroll">Sign Out</a></li>
+					{% else %}
+					<li><a href="/sign-in" class="smoothScroll">Sign In</a></li>
+					{% endif %}
+
+				</ul>
+			</div>
+
+		</div>
+	</section>
+
+
+	{% block content %}{% endblock %}
+
+	<!-- FOOTER -->
+	<footer data-stellar-background-ratio="5">
+		<div class="container">
+			<div class="row">
+
+				<div class="col-md-4 col-sm-4">
+					<div class="footer-thumb">
+						<h4 class="wow fadeInUp" data-wow-delay="0.4s">Contact Info</h4>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam justo neque,
+							aliquet sit amet elementum vel, vehicula eget eros. Vivamus arcu metus, mattis
+							sed sagittis at, sagittis quis neque. Praesent.</p>
+
+					</div>
+				</div>
+
+				<div class="col-md-4 col-sm-4">
+					<div class="footer-thumb">
+						<h4 class="wow fadeInUp" data-wow-delay="0.4s">Contact Us</h4>
+
+						<div class="contact-info">
+							<p><i class="fa fa-phone"></i> 077 382 9768</p>
+							<p><i class="fa fa-whatsapp"></i> 077 382 9768</p>
+							<p><i class="fa fa-envelope-o"></i> <a href="#"> blooddonationnsbm@gmail.com</a></p>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="col-md-4 col-sm-4">
+					<div class="footer-thumb">
+						<div class="opening-hours">
+							<h4 class="wow fadeInUp" data-wow-delay="0.4s">Follow Us On</h4>
+						</div>
+
+						<div class="contact-info">
+							<p><i class="fa fa-facebook"></i> /Sithum</p>
+							<p><i class="fa fa-linkedin"></i> /Sithum</p>
+							<p><i class="fa fa-twitter"></i> /Sithum</p>
+							<p><i class="fa fa-youtube"></i> /Sithum</p>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="col-md-12 col-sm-12 border-top">
+					<div class="col-md-4 col-sm-6">
+						<div class="copyright-text">
+							<p>Copyright &copy;
+								<script>
+									var CurrentYear = new Date().getFullYear()
+									document.write(CurrentYear)
+								</script>
+								| All right reserved
+
+								| Sithum
+							</p>
+						</div>
+					</div>
+					<div class="col-md-6 col-sm-6">
+					</div>
+					<div class="col-md-2 col-sm-2 text-align-center">
+						<div class="angle-up-btn">
+							<a href="#top" class="smoothScroll wow fadeInUp" data-wow-delay="1.2s"><i
+									class="fa fa-angle-up"></i></a>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</footer>
+
+	<!-- SCRIPTS -->
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/js/bootstrap.min.js"></script> -->
+	<script src="static/js/bootstrap.min.js"></script>
+	<script src="static/js/jquery.sticky.js"></script>
+	<script src="static/js/jquery.stellar.min.js"></script>
+	<script src="static/js/wow.min.js"></script>
+	<script src="static/js/smoothscroll.js"></script>
+	<script src="static/js/owl.carousel.min.js"></script>
+	<script src="static/js/custom.js"></script>
+
+</body>
+
+</html>

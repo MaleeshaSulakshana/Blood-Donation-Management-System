@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% block title %}Blood Donation - Home{% endblock %}
+{% block content %}
+
+
+<section id="appointment" data-stellar-background-ratio="3">
+     <div class="container">
+          <div class="row">
+
+               <div class="col-md-6 col-sm-6">
+                    <img src="static/images/appointment-image.jpg" class="img-responsive" alt="">
+               </div>
+
+               <div class="col-md-6 col-sm-6">
+
+                    <form id="form_create_account" role="form" method="post" action="#">
+
+                         <div class="section-title wow fadeInUp" data-wow-delay="0.4s">
+                              <h2>Organization Sign Up</h2>
+                         </div>
+
+                         <div class="wow fadeInUp" data-wow-delay="0.8s">
+                              <div class="col-md-12 col-sm-12">
+                                   <label for="name">Organization Name</label>
+                                   <input type="text" class="form-control" id="name" name="name"
+                                        placeholder="Organization Name">
+                              </div>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <label for="email">Organization Email</label>
+                                   <input type="email" class="form-control" id="email" name="email"
+                                        placeholder="Organization Email">
+                              </div>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <label for="hod">HOD of Organization</label>
+                                   <input type="text" class="form-control" id="hod" name="hod"
+                                        placeholder="HOD of Organization">
+                              </div>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <label for="location">Organization Location</label>
+                                   <input type="text" class="form-control" id="location" name="location"
+                                        placeholder="Organization Location">
+                              </div>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <label for="number">Phone Number</label>
+                                   <input type="text" class="form-control" id="number" name="number"
+                                        placeholder="Phone Number">
+                              </div>
+
+
+                              <div class="col-md-12 col-sm-12">
+                                   <label for="psw">Password</label>
+                                   <input type="password" class="form-control" id="psw" name="psw"
+                                        placeholder="Password">
+                              </div>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <label for="cpsw">Confirm Password</label>
+                                   <input type="password" class="form-control" id="cpsw" name="cpsw"
+                                        placeholder="Confirm Password">
+                              </div>
+
+
+                              <div class="col-md-12 col-sm-12">
+                                   <button type="submit" class="form-control" id="cf-submit" name="submit">Sign
+                                        Up</button>
+                              </div>
+
+                              <br>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <a href="/sign-up">Are you haven't user account? User Sign Up
+                                        Here</a>
+                              </div>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <br>
+                                   <hr>
+                                   <br>
+                              </div>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <a href="/sign-in">If you have account? Sign In
+                                        Here</a>
+                              </div>
+                         </div>
+                    </form>
+               </div>
+
+          </div>
+     </div>
+</section>
+
+<script>
+
+     $(function () {
+          $('#cf-submit').click(function () {
+
+               var name = $('#name').val();
+               var email = $('#email').val();
+               var hod = $('#hod').val();
+               var location = $('#location').val();
+               var number = $('#number').val();
+               var psw = $('#psw').val();
+               var cpsw = $('#cpsw').val();
+
+               if (name == "" || email == "" || hod == "" || location == "" ||
+                    number == "" || psw == "" || cpsw == "") {
+                    swal.fire("Sign Up", "Fields are empty!", "warning");
+
+               } else {
+
+                    var form_data = new FormData();
+                    form_data.append('name', name);
+                    form_data.append('email', email);
+                    form_data.append('hod', hod);
+                    form_data.append('location', location);
+                    form_data.append('number', number);
+                    form_data.append('psw', psw);
+                    form_data.append('cpsw', cpsw);
+
+                    $.ajax({
+                         url: "/organization_register",
+                         enctype: 'multipart/form-data',
+                         data: form_data,
+                         contentType: false,
+                         cache: false,
+                         processData: false,
+                         type: 'POST',
+                    })
+                         .done(function (data) {
+                              if (data.redirect) {
+                                   window.location.href = data.redirect;
+                              }
+                              else if (data.success) {
+                                   Swal.fire("Sign Up", data.success, "success");
+                                   document.getElementById("form_create_account").reset();
+                              }
+                              else if (data.error) {
+                                   Swal.fire("Sign Up", data.error, "warning");
+                              }
+                              else {
+                                   Swal.fire("Sign Up", "Some error occur!", "warning");
+                              }
+                         });
+
+               }
+
+               event.preventDefault();
+          });
+     });
+
+</script>
+
+
+{% endblock %}

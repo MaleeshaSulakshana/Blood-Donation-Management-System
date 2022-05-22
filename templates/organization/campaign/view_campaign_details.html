@@ -1,0 +1,222 @@
+{% extends 'organization/base.html' %}
+{% block title %}Blood Donation | Organization | View Campaign Details{% endblock %}
+{% block content %}
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+<div class="content-wrapper">
+  <div class="row">
+
+    <div class="col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">View Campaign Details</h4>
+
+          {% if details %}
+
+          <form class="forms-sample" id="form_create">
+            <div class="form-group">
+              <label for="name">Campaign Name</label>
+              <input type="text" class="form-control" id="name" placeholder="Campaign Name" value="{{ details[0][1] }}"
+                disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="venue">Campaign Venue</label>
+              <input type="text" class="form-control" id="venue" placeholder="Campaign Venue"
+                value="{{ details[0][2] }}" disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="date">Campaign Date</label>
+              <input type="text" class="form-control" id="date" placeholder="Campaign Date" value="{{ details[0][3] }}"
+                disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="stime">Campaign Start Time</label>
+              <input type="text" class="form-control" id="stime" placeholder="Campaign Start Time"
+                value="{{ details[0][4] }}" disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="etime">Campaign End Time</label>
+              <input type="text" class="form-control" id="etime" placeholder="Campaign End Time"
+                value="{{ details[0][5] }}" disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="lat">Campaign Location (Latitude)</label>
+              <input type="text" class="form-control" id="lat" placeholder="Campaign Location (Latitude)"
+                value="{{ details[0][6] }}" disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="long">Campaign Location (Longitude)</label>
+              <input type="text" class="form-control" id="long" placeholder="Campaign Location (Longitude)"
+                value="{{ details[0][7] }}" disabled>
+            </div>
+
+            <button type="button" id="map-btn" onclick="showMap('{{ details[0][6] }}', '{{ details[0][7] }}')"
+              class="btn btn-primary me-2">View On Map</button>
+
+            <div class="form-group">
+              <label for="desc">Description</label>
+              <textarea class="form-control" id="desc" rows="4" placeholder="Description"
+                disabled>{{ details[0][8] }}</textarea>
+            </div>
+
+            {% if day_count > 0 %}
+            <button type="button" id="btn-remove" onclick="remove('{{ details[0][0] }}')"
+              class="btn btn-primary me-2">Remove</button>
+            {% endif %}
+
+          </form>
+
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% if appointments %}
+<div class="content-wrapper">
+  <div class="row">
+
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Appointments</h4>
+
+
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Donor</th>
+                <th>Email</th>
+                <th>Number</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+
+              {% for item in appointments %}
+              <tr>
+                <td>{{ item[3] }}</td>
+                <td>{{ item[2] }}</td>
+                <td>{{ item[4] }}</td>
+                <td>
+                  <a href="/organization/donor/view-donor-details?id={{ item[2] }}&campaign={{ item[1] }}"
+                    class="btn btn-secondary">VIEW</a>
+                </td>
+              </tr>
+              {% endfor %}
+
+
+            </tbody>
+          </table>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endif %}
+
+
+{% if donations %}
+<div class="content-wrapper">
+  <div class="row">
+
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Donations</h4>
+
+
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Donor</th>
+                <th>Email</th>
+                <th>Number</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+
+              {% for item in donations %}
+              <tr>
+                <td>{{ item[5] }}</td>
+                <td>{{ item[1] }}</td>
+                <td>{{ item[8] }}</td>
+                <td>
+                  <a href="/organization/donor/view-donor-details?id={{ item[1] }}" class="btn btn-secondary">VIEW</a>
+                </td>
+              </tr>
+              {% endfor %}
+
+
+            </tbody>
+          </table>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endif %}
+
+<script>
+
+  function showMap(lat, lng) {
+    var url = "https://maps.google.com/?q=" + lat + "," + lng;
+    window.open(url);
+  }
+
+  function remove($campaignId) {
+
+    var form_data = new FormData();
+    form_data.append('id', $campaignId);
+
+    $.ajax({
+      url: "/organization/campaign/remove_campaign",
+      enctype: 'multipart/form-data',
+      data: form_data,
+      contentType: false,
+      cache: false,
+      processData: false,
+      type: 'POST',
+    })
+      .done(function (data) {
+        if (data.redirect) {
+          window.location.href = data.redirect;
+        }
+        else if (data.success) {
+          Swal.fire("Campaign Remove", data.success, "success");
+          window.location.href = "/organization/";
+        }
+        else if (data.error) {
+          Swal.fire("Campaign Remove", data.error, "warning");
+        }
+        else {
+          Swal.fire("Campaign Remove", "Some error occur!", "warning");
+        }
+      });
+
+    event.preventDefault();
+  }
+
+
+</script>
+
+{% endblock %}

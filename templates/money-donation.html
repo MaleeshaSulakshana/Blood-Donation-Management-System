@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% block title %}Blood Donation - Home{% endblock %}
+{% block content %}
+
+
+<section id="appointment" data-stellar-background-ratio="3">
+     <div class="container">
+          <div class="row">
+
+               <div class="col-md-6 col-sm-6">
+                    <img src="static/images/appointment-image.jpg" class="img-responsive" alt="">
+               </div>
+
+               <div class="col-md-6 col-sm-6">
+                    <!-- CONTACT FORM HERE -->
+                    <form id="appointment-form" role="form" method="post" action="#">
+
+                         <!-- SECTION TITLE -->
+                         <div class="section-title wow fadeInUp" data-wow-delay="0.4s">
+                              <h2>Money Donation</h2>
+                         </div>
+
+                         <div class="wow fadeInUp" data-wow-delay="0.8s">
+
+                              <div class="col-md-12 col-sm-12">
+                                   <label for="name">Donor Name</label>
+                                   <input type="text" class="form-control" id="name" name="name"
+                                        placeholder="Donor Name" />
+                              </div>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <label for="email">Donor Email</label>
+                                   <input type="email" class="form-control" id="email" name="email"
+                                        placeholder="Donor Email" />
+                              </div>
+
+                              <div class="col-md-12 col-sm-12">
+                                   <label for="amount">Donate Amount</label>
+                                   <input type="amount" class="form-control" id="amount" name="amount"
+                                        placeholder="Donate Amount">
+                              </div>
+
+                              <div class="col-md-12 col-sm-12 text-center">
+                                   <label for="">Donate With Paypal</label>
+                                   <div id="paypal-button"></div>
+                              </div>
+
+                         </div>
+
+               </div>
+               </form>
+          </div>
+
+     </div>
+     </div>
+</section>
+
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
+<script>
+     var CREATE_PAYMENT_URL = 'http://127.0.0.1:5000/payment';
+     var EXECUTE_PAYMENT_URL = 'http://127.0.0.1:5000/execute';
+
+     paypal.Button.render({
+
+          env: 'sandbox',
+
+          commit: true,
+
+          payment: function () {
+               var name = $('#name').val();
+               var email = $('#email').val();
+               var amount = $('#amount').val();
+
+               if (name == "" || email == "" || amount == "") {
+                    swal.fire("Money Donation", "Fields are empty!", "warning");
+                    return false;
+
+               } else {
+                    return paypal.request.post(CREATE_PAYMENT_URL, {
+                         amount: amount
+                    }).then(function (data) {
+                         return data.paymentID;
+                    });
+               }
+
+          },
+
+          onAuthorize: function (data) {
+               var name = $('#name').val();
+               var email = $('#email').val();
+               var amount = $('#amount').val();
+               return paypal.request.post(EXECUTE_PAYMENT_URL, {
+                    paymentID: data.paymentID,
+                    payerID: data.payerID,
+                    name: name,
+                    email: email,
+                    amount: amount
+               }).then(function (res) {
+
+                    if (res.error) {
+                         Swal.fire("Money Donation", res.error, "warning");
+                    }
+                    else if (res.success) {
+                         location.reload();
+                    }
+                    else if (res.redirect) {
+                         window.location.href = res.redirect
+                    }
+                    else {
+                         Swal.fire("Money Donation", "Some error occur", "warning");
+                    }
+
+               });
+          }
+
+     }, '#paypal-button');
+</script>
+
+
+{% endblock %}

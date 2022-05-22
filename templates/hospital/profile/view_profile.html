@@ -1,0 +1,90 @@
+{% extends 'hospital/base.html' %}
+{% block title %}Blood Donation | Hospital | View Profile{% endblock %}
+{% block content %}
+
+<div class="content-wrapper">
+  <div class="row">
+
+    <div class="col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Account Details</h4>
+
+          {% if details %}
+
+          <form class="forms-sample" id="form_create">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" class="form-control" id="name" placeholder="Name" value="{{ details[0][1] }}">
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="text" class="form-control" id="email" placeholder="Email" value="{{ details[0][0] }}"
+                disabled>
+            </div>
+
+            <button type="button" class="btn btn-primary me-2" id="btnUpdate">Update</button>
+
+          </form>
+
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+
+  $(function () {
+    $('#btnUpdate').click(function () {
+
+      var name = $('#name').val();
+
+      if (name == "") {
+        swal.fire("Account Details", "Fields are empty!", "warning");
+
+      }
+      else {
+
+        var form_data = new FormData();
+        form_data.append('name', name);
+
+        $.ajax({
+          url: "/hospital/profile/update_account_details",
+          enctype: 'multipart/form-data',
+          data: form_data,
+          contentType: false,
+          cache: false,
+          processData: false,
+          type: 'POST',
+        })
+          .done(function (data) {
+            if (data.redirect) {
+              window.location.href = data.redirect;
+            }
+            else if (data.success) {
+              Swal.fire("Account Details", data.success, "success");
+              document.getElementById("form_create").reset();
+            }
+            else if (data.error) {
+              Swal.fire("Account Details", data.error, "warning");
+            }
+            else {
+              Swal.fire("Account Details", "Some error occur!", "warning");
+            }
+          });
+
+      }
+
+      event.preventDefault();
+    });
+  });
+
+</script>
+
+{% endblock %}

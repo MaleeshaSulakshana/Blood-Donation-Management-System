@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Blood Donation - Emergency{% endblock %}
+{% block content %}
+
+
+<section id="appointment" data-stellar-background-ratio="2.5">
+     <div class="container">
+          <div class="row">
+
+               <div class="col-md-12 col-sm-12">
+                    <!-- SECTION TITLE -->
+                    <div class="section-title wow fadeInUp" data-wow-delay="0.1s">
+                         <h2>Emergency Needs</h2>
+                    </div>
+               </div>
+
+
+               {% if details %}
+               {% for item in details %}
+
+               <div class="col-md-12 col-sm-12">
+
+                    <div class="stories-image">
+                         <a href="/campaign-details?id={{ item[0] }}"><img src="static/images/emergency_needs.jpg"
+                                   class="img-responsive" alt=""></a>
+                    </div>
+                    <div class="stories-info">
+                         <a href="/campaign-details?id={{ item[0] }}">
+                              <h5>{{ item[1] }}</h5>
+                         </a>
+                         <span>Description : {{ item[2] }}</span>
+                         <br />
+                         <span>Hospital : {{ item[5] }} | Number : {{ item[6] }} | Address : {{ item[7] }}</span>
+                         <br />
+                         <span>Added Date : {{ item[3] }}</span>
+                    </div>
+                    <br />
+                    <br />
+                    <br />
+               </div>
+
+               {% endfor %}
+               {% endif %}
+
+          </div>
+
+     </div>
+
+</section>
+
+
+{% endblock %}

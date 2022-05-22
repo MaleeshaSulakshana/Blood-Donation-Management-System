@@ -1,0 +1,93 @@
+{% extends 'hospital/base.html' %}
+{% block title %}Blood Donation | Hospital | View Emergency Need Details{% endblock %}
+{% block content %}
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+{% if details %}
+
+<div class="content-wrapper">
+  <div class="row">
+
+    <div class="col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">View Emergency Need Details</h4>
+
+          <form class="forms-sample" id="form_create">
+
+            <div class="form-group">
+              <label for="id">Id</label>
+              <input type="text" class="form-control" id="id" placeholder="Id" value="{{ details[0][0] }}" disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="date">Added Date</label>
+              <input type="text" class="form-control" id="date" placeholder="Added Date" value="{{ details[0][3] }}"
+                disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="name">Title</label>
+              <input type="text" class="form-control" id="title" placeholder="Title" value="{{ details[0][1] }}"
+                disabled>
+            </div>
+
+            <div class="form-group">
+              <label for="desc">Description</label>
+              <textarea class="form-control" id="desc" rows="4" placeholder="Description"
+                disabled>{{ details[0][2] }}</textarea>
+            </div>
+
+            <button type="submit" id="btn-remove" class="btn btn-primary me-2">Remove</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+  $(function () {
+    $('#btn-remove').click(function () {
+
+      var form_data = new FormData();
+      form_data.append('id', $('#id').val());
+
+      $.ajax({
+        url: "/hospital/emergency/remove",
+        enctype: 'multipart/form-data',
+        data: form_data,
+        contentType: false,
+        cache: false,
+        processData: false,
+        type: 'POST',
+      })
+        .done(function (data) {
+          if (data.redirect) {
+            window.location.href = data.redirect;
+          }
+          else if (data.success) {
+            Swal.fire("Remove Emergency Need", data.success, "success");
+            window.location.href = "/hospital/emergency/needs";
+          }
+          else if (data.error) {
+            Swal.fire("Remove Emergency Need", data.error, "warning");
+          }
+          else {
+            Swal.fire("Remove Emergency Need", "Some error occur!", "warning");
+          }
+        });
+
+      event.preventDefault();
+    });
+  });
+
+</script>
+
+{% endif %}
+
+
+{% endblock %}
