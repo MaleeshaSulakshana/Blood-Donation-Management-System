@@ -531,7 +531,7 @@ def payment():
             "amount": {
                 "total": amount,
                 "currency": "USD"},
-            "description": "Meal master 30 days subscription payment."}]})
+            "description": "Money Donation."}]})
 
     if payment.create():
         print('Payment success!')

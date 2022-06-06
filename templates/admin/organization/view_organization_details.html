@@ -9,7 +9,7 @@
 
     <div class="col-12 grid-margin stretch-card">
       <div class="card">
-        <div class="card-body">
+        <div class="card-body" id="page">
           <h4 class="card-title">View Organization Details</h4>
 
           {% if details %}
@@ -61,7 +61,41 @@
   </div>
 </div>
 
+
+<div class="content-wrapper">
+  <div class="row">
+
+    <div class="card">
+      <div class="card-body">
+
+        <div class="submit-button text-center">
+          <button class="btn btn-common btn-secondary w-100" id="download" onclick="downloadPdf('Organization-Details')"
+            type="button">Download Details</button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <script>
+
+  function downloadPdf(fileName) {
+
+    var pdf_content = document.getElementById("page");
+    var options = {
+      margin: 1,
+      filename: fileName + '.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+
+    };
+
+    html2pdf(pdf_content, options);
+
+  }
 
 
   function approve($organizationId) {

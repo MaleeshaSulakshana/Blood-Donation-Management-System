@@ -32,6 +32,10 @@
           </div>
         </div>
 
+        <div class="submit-button text-center">
+          <button class="btn btn-common btn-secondary w-100" id="download" onclick="downloadPdf('Organization-Details')"
+            type="button">Download Details</button>
+        </div>
 
         {% if month %}
         <div class="form-group">
@@ -40,7 +44,7 @@
         </div>
         {% endif %}
 
-        <div class="table-responsive">
+        <div class="table-responsive" id="page">
           <table class="table table-hover">
             <thead>
               <tr>
@@ -84,6 +88,22 @@
 </div>
 
 <script type="text/javascript">
+
+  function downloadPdf(fileName) {
+
+    var pdf_content = document.getElementById("page");
+    var options = {
+      margin: 1,
+      filename: fileName + '.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+
+    };
+
+    html2pdf(pdf_content, options);
+
+  }
 
   $(function () {
     $('#btn-view').click(function () {

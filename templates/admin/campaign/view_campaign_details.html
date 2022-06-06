@@ -4,12 +4,14 @@
 
 <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
+<!-- <div id="page"> -->
+
 <div class="content-wrapper">
   <div class="row">
 
     <div class="col-12 grid-margin stretch-card">
       <div class="card">
-        <div class="card-body">
+        <div class="card-body" id="page">
           <h4 class="card-title">View Campaign Details</h4>
 
           {% if details %}
@@ -76,6 +78,12 @@
           {% endif %}
 
         </div>
+
+        <div class="submit-button text-center">
+          <button class="btn btn-common btn-success w-100" id="download" onclick="downloadPdf('Campaign-Details')"
+            type="button">Download Details</button>
+        </div>
+
       </div>
     </div>
 
@@ -119,7 +127,6 @@
           </table>
 
         </div>
-
       </div>
     </div>
 
@@ -173,6 +180,7 @@
   </div>
 </div>
 
+
 {% endif %}
 
 <script>
@@ -180,6 +188,22 @@
   function showMap(lat, lng) {
     var url = "https://maps.google.com/?q=" + lat + "," + lng;
     window.open(url);
+  }
+
+  function downloadPdf(fileName) {
+
+    var pdf_content = document.getElementById("page");
+    var options = {
+      margin: 1,
+      filename: fileName + '.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+
+    };
+
+    html2pdf(pdf_content, options);
+
   }
 
   function approve($campaignId) {
